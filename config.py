@@ -1,3 +1,5 @@
 #coding: utf-8
 
-GITHUB_API_TOKEN = "xxxx"
+MANY_STAR               = 1000
+GITHUB_API_ACCESS_LIMIT = 2
+GITHUB_API_TOKEN        = ""
