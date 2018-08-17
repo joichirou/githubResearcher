@@ -1,2 +1,3 @@
 # githubResearcher
-* python -m pip install --user requests
+* this program use language is Python3
+* pip3 install requests
