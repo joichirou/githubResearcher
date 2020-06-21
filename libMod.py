@@ -6,7 +6,7 @@ import userInfo
 import config
 
 class Search(object):
-    def __init__(self, user="payzaburou"):
+    def __init__(self, user=config.SEARCH_ROOT_USER):
         self.search_url = "https://api.github.com/search/users"
         self.user       = user
 

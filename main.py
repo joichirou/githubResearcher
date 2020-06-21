@@ -90,6 +90,14 @@ class githubStarResearcher():
 
 
 if __name__ == "__main__":
+    # checking on config file.
+    if not config.GITHUB_API_TOKEN:
+        print("please setting GITHUB_API_TOKEN.")
+        exit(1)
+    if not config.SEARCH_ROOT_USER:
+        print("please setting SEARCH_ROOT_USER.")
+        exit(1)
+    # start main program.
     if mylib.is_exceed_rate_limit():
         pass
     researcher = githubStarResearcher()
