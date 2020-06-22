@@ -5,10 +5,26 @@ import sqlite3
 
 
 class User(object):
+    def __init__(self, json=None):
+        if json:
+            self.set_json_data(json)
+            return
+        self.id            = None
+        self.name          = None
+        self.avatar_url    = None
+        self.url           = None
+        self.follower_url  = None
+        self.followers     = None
+        self.following_url = None
+        self.followings    = None
+        self.repos_url     = None
+        self.repos         = None
+        self.type          = None
 
-    def __init__(self, json):
+    def set_json_data(self, json):
         self.id            = json["id"]
         self.name          = json["login"]
+        self.avatar_url    = json["avatar_url"]
         self.url           = json["url"]
         self.follower_url  = json["followers_url"]
         self.followers     = []
@@ -17,6 +33,7 @@ class User(object):
         self.repos_url     = json["repos_url"]
         self.repos         = []
         self.type          = json["type"]
+
 
     def get_followings(self):
         res = mylib.github_api_request(self.following_url.replace("{/other_user}", ""))
@@ -35,10 +52,11 @@ class User(object):
     def get_repos(self):
         pass
 
+
 class DB(object):
 
     def __init__(self):
-        self.db_name = "user.db"
+        self.db_name = "github.db"
         self.table   = "user"
         self.conn    = self._get_conn()
         self._create_table()
@@ -52,6 +70,7 @@ class DB(object):
              sql = """create table if not exists %s(
                       id integer primary key default null,
                       name varchar(255) default null,
+                      avatar_url varchar(255) default null,
                       url varchar(255) default null,
                       created_at TIMESTAMP DEFAULT (DATETIME('now','localtime')),
                       updated_at TIMESTAMP DEFAULT (DATETIME('now','localtime')));
@@ -71,8 +90,8 @@ class DB(object):
             return False
         with self.conn as conn:
             c = conn.cursor()
-            sql = "insert into %s(id, name, url) values('%s', '%s', '%s');" % (
-                self.table, user.id, user.name, user.url)
+            sql = "insert into %s(id, name, avatar_url, url) values('%s', '%s', '%s', '%s');" % (
+                self.table, user.id, user.name, user.avatar_url, user.url)
             c.execute(sql)
             conn.commit()
             return True

@@ -20,8 +20,9 @@ def is_exceed_rate_limit(url=None):
     u"""APIのレート制限を越えていないか"""
     if not url:
         s = Search()
-        result = s.search()
-        user = userInfo.User(result["items"][0])
+        json = s.search()
+        item = json["items"][0]
+        user = userInfo.User(item)
         url = user.repos_url
     res = requests.get(url)
     json = res.json()
