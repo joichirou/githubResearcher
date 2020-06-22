@@ -6,9 +6,10 @@ import userInfo
 import config
 
 class Search(object):
-    def __init__(self, user=config.SEARCH_ROOT_USER):
+    def __init__(self, root_user=config.SEARCH_ROOT_USER):
         self.search_url = "https://api.github.com/search/users"
-        self.user       = user
+        self.user       = root_user
+        print("search root user:%s" % root_user)
 
     def search(self):
         response = github_api_request(self.search_url, params={"q": self.user})
