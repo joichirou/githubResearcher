@@ -118,18 +118,28 @@ class DB(object):
                 return True
             return False
 
-    def get_records(self):
+    def get_records(self, limit=None, offset=None):
         with self.conn as conn:
             c = self.conn.cursor()
-            sql = "select name from %s;" % self.table
+            option = ""
+            if limit:
+                option = " LIMIT %s" % limit
+                if offset:
+                    option = "%s OFFSET %s" % (option, offset)
+            sql = "select name from %s%s;" % (self.table, option)
             return c.execute(sql).fetchall()
 
 
-    def get_famous_repo_list(self):
+    def get_famous_repo_list(self, limit=None, offset=None):
         repo_list = []
+        option = ""
+        if limit:
+            option = " LIMIT %s" % limit
+            if offset:
+                option = "%s OFFSET %s" % (option, offset)
         with self.conn as conn:
             c = self.conn.cursor()
-            sql = "select r.repository_id, r.name, r.star, r.language, r.owner_id, r.url, u.name, u.avatar_url, u.url from repository as r join user as u on r.owner_id = u.id where r.star >= 1000 order by r.star desc limit 10;"
+            sql = "select r.repository_id, r.name, r.star, r.language, r.owner_id, r.url, u.name, u.avatar_url, u.url from repository as r join user as u on r.owner_id = u.id where r.star >= 1000 order by r.star desc%s;" % option
             for rec in c.execute(sql).fetchall():
                 repo = Repository()
                 repo.id         = rec[0]

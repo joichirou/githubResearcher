@@ -53,51 +53,42 @@
                 </p>
             </div>
         </div>
-        <div class="col-12 pt-3 pt-lg-5 pb-3 pb-lg-5 d-block d-lg-flex justify-content-center">
-            % top3 = repositories[:3]
-            % under = repositories[3:]
-            % for repo in top3:
-                <div class="col-12 col-lg-3 repo border rounded mb-3 mr-lg-4 p-3 pt-4 pb-4 text-center">
-                    <a href="{{ repo.owner.url }}" target="_blank"><img class="rounded img-fluid w-50 mb-3" src="{{ repo.owner.avatar_url }}"></a>
-                    <div class="font-weight-bold mb-2">
-                        <a href="{{repo.url}}" target="_blank">{{ repo.name }}</a>
-                    </div>
-                    <div>{{ repo.language }} / ⭐️ {{ repo.star }}</div>
-                </div>
-            % end
-        </div>
-        <div class="text-center mb-3">
-            <div class="info-area ex col-12 p-3 pt-4 pb-4">
-                <b>[Search Condition]</b><br>
-                <ul class="pl-0 mb-0" style="list-style-type:none;">
-                    <li>* Language: Python</li>
-                    <li>* Star: 1,000 over</li>
-                </ul>
-                <div class="p-4 text-info">
-                    <i class="fas fa-3x fa-code-branch"></i>
-                </div>
-                <p>These datas getting from <a href="https://github.com" target="_blank">github.com</a> by Github Api.<br>
-                This website source code put on <a href="https://github.com/joichirou/githubResearcher" target="_blank">here</a>.
-                </p>
-            </div>
-        </div>
         <div class="col-12 col-md-8" style="margin:0 auto;">
-            % for repo in under:
-                <div class="repo border col-12 m-0 rounded mb-2 p-2 pt-4 pb-4 row">
-                    <div class="" style="width:100px;height:100px;">
-                        <a href="{{ repo.owner.url }}" target="_blank"><img class="rounded img-fluid" src="{{ repo.owner.avatar_url }}"></a>
-                    </div>
-                    <div class="col-7 ml-3 mt-3">
-                        <div class="font-weight-bold mb-2">
-                            <a href="{{repo.url}}" target="_blank">{{ repo.name }}</a>
-                        </div>
-                        <div>{{ repo.language }} / ⭐️ {{ repo.star }}</div>
-                    </div>
+            <table class="table text-center table-hover border mt-4">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>User</th>
+                        <th>Repository</th>
+                        <th>Star</th>
+                        <th>Language</th>
+                    </tr>
+                </thead>
+                <tbody class="table-borderless">
+                    % for index, repo in enumerate(repositories):
+                    <tr>
+                        <th>{{ (int(page_no)*int(limit))+index+1 }}</th>
+                        <td style="width:50px;height=50px;">
+                            <a href="{{ repo.owner.url }}" target="_blank"><img class="rounded img-fluid" src="{{ repo.owner.avatar_url }}"></a>
+                        </td>
+                        <td><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</td></a>
+                        <td>⭐️{{ repo.star }}</td>
+                        <td>{{ repo.language }}</td>
+                    </tr>
+                    % end
+                </tbody>
+            </table>
+            <div class="text-center pt-4 pb-5">
+                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                    % prev = int(page_no) - 1
+                    % prev = 0 if prev < 0 else prev
+                    % next = int(page_no) + 1
+                    % next = 0 if len(repositories) == 0 else next
+                    <a href="/list/{{ prev }}"><button type="button" class="btn btn-secondary">Prev</button></a>
+                    <button type="button" class="btn">{{ int(page_no) * int(limit) }} / {{ (int(page_no) +1) * int(limit) }}</button>
+                    <a href="/list/{{ next }}"><button type="button" class="btn btn-secondary">Next</button></a>
                 </div>
-            % end
-        </div>
-        <div class="text-center pt-4 pb-5">
-            <a href="/list">show more ...</a>
+            </div>
         </div>
     </body>
     <footer class="text-center pt-3 pb-3">
